@@ -540,7 +540,12 @@ esp_err_t esp_mqtt5_client_set_subscribe_property(esp_mqtt5_client_handle_t clie
 
     if (property->retain_handle > 2) {
         ESP_LOGE(TAG, "retain_handle only support 0, 1, 2");
-        return -1;
+        return ESP_FAIL;
+    }
+
+    if (property->subscribe_id > 268435455) {
+        ESP_LOGE(TAG, "subscribe_id only support up to 268435455");
+        return ESP_FAIL;
     }
 
     MQTT_API_LOCK(client);
