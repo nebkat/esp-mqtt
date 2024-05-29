@@ -110,7 +110,7 @@ typedef struct {
  *  MQTT5 protocol subscribe properties configuration, more details refer to MQTT5 protocol document section 3.8.2.1
  */
 typedef struct {
-    uint16_t subscribe_id;                       /*!< A variable byte represents the identifier of the subscription */
+    uint32_t subscribe_id;                       /*!< A variable byte represents the identifier of the subscription */
     bool no_local_flag;                          /*!< Subscription Option to allow that server publish message that client sent */
     bool retain_as_published_flag;               /*!< Subscription Option to keep the retain flag as published option */
     uint8_t retain_handle;                       /*!< Subscription Option to handle retain option */
@@ -153,7 +153,7 @@ typedef struct {
     uint16_t correlation_data_len;      /*!< Correlation data length of the message */
     char *content_type;                 /*!< Content type of the message */
     int content_type_len;               /*!< Content type length of the message */
-    uint16_t subscribe_id;              /*!< Subscription identifier of the message */
+    uint32_t subscribe_id;              /*!< Subscription identifier of the message */
     mqtt5_user_property_handle_t
     user_property;  /*!< The handle for user property, call function esp_mqtt5_client_delete_user_property to free the memory */
 } esp_mqtt5_event_property_t;
