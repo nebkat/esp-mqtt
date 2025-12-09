@@ -1156,6 +1156,36 @@ esp_err_t esp_mqtt_client_set_uri(esp_mqtt_client_handle_t client, const char *u
     return ESP_OK;
 }
 
+esp_err_t esp_mqtt_client_get_uri(esp_mqtt_client_handle_t client, char *uri, size_t max_len)
+{
+    if (client == NULL || uri == NULL) {
+        return ESP_ERR_INVALID_ARG;
+    }
+
+    MQTT_API_LOCK(client);
+    snprintf(uri, max_len, "%s://%s:%d%s",
+             client->config->scheme ? client->config->scheme : MQTT_OVER_TCP_SCHEME,
+             client->config->host ? client->config->host : "localhost",
+             client->config->port,
+             client->config->path ? client->config->path : "/");
+    MQTT_API_UNLOCK(client);
+
+    return ESP_OK;
+}
+
+esp_err_t esp_mqtt_client_get_client_id(esp_mqtt_client_handle_t client, char *client_id, size_t max_len)
+{
+    if (client == NULL || client_id == NULL) {
+        return ESP_ERR_INVALID_ARG;
+    }
+
+    MQTT_API_LOCK(client);
+    strlcpy(client_id, client->mqtt_state.connection.information.client_id, max_len);
+    MQTT_API_UNLOCK(client);
+
+    return ESP_OK;
+}
+
 static esp_err_t esp_mqtt_dispatch_event_with_msgid(esp_mqtt_client_handle_t client)
 {
     if (client->mqtt_state.connection.information.protocol_ver == MQTT_PROTOCOL_V_5) {

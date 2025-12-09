@@ -430,6 +430,30 @@ esp_err_t esp_mqtt_client_set_uri(esp_mqtt_client_handle_t client,
                                   const char *uri);
 
 /**
+ * @brief Gets *MQTT* connection URI. Output will be truncated if buffer is not
+ * large enough to hold the full URI.
+ *
+ * @param client     *MQTT* client handle
+ * @param uri        Buffer to hold the URI string
+ * @param max_len    Maximum length of the buffer (including null terminator)
+ * @return ESP_OK on success
+ *         ESP_ERR_INVALID_ARG on null arguments
+ */
+esp_err_t esp_mqtt_client_get_uri(esp_mqtt_client_handle_t client, char *uri, size_t max_len);
+
+/**
+ * @brief Gets *MQTT* client ID. Output will be truncated if buffer is not
+ * large enough to hold the full client ID.
+ *
+ * @param client     *MQTT* client handle
+ * @param uri        Buffer to hold the URI string
+ * @param max_len    Maximum length of the buffer (including null terminator)
+ * @return ESP_OK on success
+ *         ESP_ERR_INVALID_ARG on null arguments
+ */
+esp_err_t esp_mqtt_client_get_client_id(esp_mqtt_client_handle_t client, char *client_id, size_t max_len);
+
+/**
  * @brief Starts *MQTT* client with already created client handle
  *
  * @param client    *MQTT* client handle
