@@ -2896,7 +2896,7 @@ esp_mqtt_client_connection_state_t esp_mqtt_client_get_state(esp_mqtt_client_han
 
     switch (client->state) {
     case MQTT_STATE_INIT:
-        ret = MQTT_CLIENT_STATE_NOT_STARTED;
+        ret = MQTT_CLIENT_STATE_DISCONNECTED;
         break;
 
     case MQTT_STATE_CONNECTED:
