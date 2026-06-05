@@ -2290,7 +2290,7 @@ static esp_err_t send_disconnect_msg(esp_mqtt_client_handle_t client)
     return ESP_OK;
 }
 
-esp_err_t esp_mqtt_client_stop(esp_mqtt_client_handle_t client)
+static esp_err_t esp_mqtt_client_stop_internal(esp_mqtt_client_handle_t client, bool send_disconnect)
 {
     if (!client) {
         ESP_LOGE(TAG, "Client was not initialized");
@@ -2309,8 +2309,8 @@ esp_err_t esp_mqtt_client_stop(esp_mqtt_client_handle_t client)
             return ESP_FAIL;
         }
 
-        // Only send the disconnect message if the client is connected
-        if (client->state == MQTT_STATE_CONNECTED) {
+        // Only send the disconnect message if the client is connected and the caller wants it
+        if (send_disconnect && client->state == MQTT_STATE_CONNECTED) {
             send_disconnect_msg(client);
         }
 
@@ -2325,6 +2325,16 @@ esp_err_t esp_mqtt_client_stop(esp_mqtt_client_handle_t client)
         MQTT_API_UNLOCK(client);
         return ESP_FAIL;
     }
+}
+
+esp_err_t esp_mqtt_client_stop(esp_mqtt_client_handle_t client)
+{
+    return esp_mqtt_client_stop_internal(client, true);
+}
+
+esp_err_t esp_mqtt_client_force_stop(esp_mqtt_client_handle_t client)
+{
+    return esp_mqtt_client_stop_internal(client, false);
 }
 
 static esp_err_t esp_mqtt_client_ping(esp_mqtt_client_handle_t client)
