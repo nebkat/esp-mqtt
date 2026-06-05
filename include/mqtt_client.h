@@ -498,6 +498,27 @@ esp_err_t esp_mqtt_client_disconnect(esp_mqtt_client_handle_t client);
  */
 esp_err_t esp_mqtt_client_stop(esp_mqtt_client_handle_t client);
 
+/**
+ * @brief Stops *MQTT* client tasks without sending a DISCONNECT packet.
+ *
+ *  Equivalent to esp_mqtt_client_stop() except that the protocol-level
+ *  DISCONNECT message is skipped even if the client is currently
+ *  MQTT_STATE_CONNECTED. Use this when the underlying transport is known to
+ *  be dead (e.g. on a lost-IP event) to avoid blocking up to
+ *  network.timeout_ms / the TCP retransmit ceiling while trying to push a
+ *  packet onto an unusable socket.
+ *
+ *  * Notes:
+ *  - Cannot be called from the *MQTT* event handler
+ *
+ * @param client    *MQTT* client handle
+ *
+ * @return ESP_OK on success
+ *         ESP_ERR_INVALID_ARG on wrong initialization
+ *         ESP_FAIL if client is in invalid state
+ */
+esp_err_t esp_mqtt_client_force_stop(esp_mqtt_client_handle_t client);
+
 #ifdef __cplusplus
 
 #define esp_mqtt_client_subscribe esp_mqtt_client_subscribe_single
